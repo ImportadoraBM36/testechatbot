@@ -63,7 +63,7 @@ def _menu_filtros(catalogo):
     opcoes.append(("Ver tudo", "f:todos"))
     return {
         "tipo": "menu",
-        "texto": "Quer filtrar por qual tipo?",
+        "texto": "selecione alguma opção",
         "opcoes": _opcoes(*opcoes),
     }
 
