@@ -1,6 +1,6 @@
 import re
 
-from produtos import buscar_produtos, pesquisar_produtos
+from .produtos import buscar_produtos, pesquisar_produtos
 
 SAUDACOES = {"oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"}
 

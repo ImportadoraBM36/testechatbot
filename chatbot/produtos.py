@@ -6,9 +6,8 @@ import unicodedata
 import psycopg
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE, ".env"))
 PASTA_IMG = os.path.join(BASE, "img")
 DATABASE_URL = os.getenv("DATABASE_URL")
 

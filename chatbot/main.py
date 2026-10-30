@@ -4,15 +4,15 @@ import sqlite3
 import time
 import psycopg
 from dotenv import load_dotenv
-
-load_dotenv()
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 
-from chatbot import responder, _menu_confirmar
+from .chatbot import responder, _menu_confirmar
 
 BASE = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(BASE)
+load_dotenv(os.path.join(BASE, ".env"))
 
 app = FastAPI()
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -39,6 +39,12 @@ def teste_banco():
             "ok": False,
             "erro": "Falha na conexão. Confira a URL e as configurações."
         }
+
+
+@app.get("/health")
+def health():
+    """Endpoint simples para verificar se o processo do Railway está no ar."""
+    return {"ok": True}
 BANCO_CLIENTES = os.path.join(BASE, "clientes.db")
 SESSOES = {}
 
@@ -137,7 +143,7 @@ app.mount("/img", StaticFiles(directory=os.path.join(BASE, "img")), name="img")
 
 @app.get("/", response_class=HTMLResponse)
 def inicio():
-    with open(os.path.join(BASE, "index.html"), "r", encoding="utf-8") as arquivo:
+    with open(os.path.join(PROJECT_ROOT, "index.html"), "r", encoding="utf-8") as arquivo:
         return arquivo.read()
 
 
@@ -232,4 +238,4 @@ async def encaminhar_atendimento(request: Request):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", "8000")))
