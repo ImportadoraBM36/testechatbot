@@ -54,7 +54,19 @@ function criarImagemIndisponivel() {
   return aviso;
 }
 
-function mostrar(resposta) { if (resposta.texto) mensagem(resposta.texto); if (resposta.produtos) mostrarProdutos(resposta.produtos); mostrarOpcoes(resposta.opcoes); if (resposta.tipo === "atendente") status.textContent = "Encaminhado ao atendimento"; }
+function mostrar(resposta) {
+  if (resposta.texto) mensagem(resposta.texto);
+  if (resposta.produtos) mostrarProdutos(resposta.produtos);
+
+  // Toda etapa oferece uma saída segura para conversas que saíram do fluxo.
+  const opcoes = [...(resposta.opcoes || [])];
+  if (!opcoes.some(opcao => opcao.valor === "reiniciar")) {
+    opcoes.push({ texto: "Voltar ao início", valor: "reiniciar" });
+  }
+  mostrarOpcoes(opcoes);
+
+  if (resposta.tipo === "atendente") status.textContent = "Encaminhado ao atendimento";
+}
 
 async function enviar(valor, exibicao = valor, grupo = null) {
   if (grupo) grupo.querySelectorAll("button").forEach(b => b.disabled = true);

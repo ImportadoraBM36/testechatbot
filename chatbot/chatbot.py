@@ -3,6 +3,7 @@ import re
 from .produtos import buscar_produtos, pesquisar_produtos
 
 SAUDACOES = {"oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"}
+COMANDOS_REINICIAR = {"reiniciar", "recomeçar", "recomecar", "início", "inicio", "menu"}
 
 # Filtros de cada catálogo: (texto do botão, valor, palavras que procuramos no nome)
 FILTROS = {
@@ -41,6 +42,21 @@ def _catalogos(texto="Qual catálogo você deseja ver?"):
             ("Talheres", "talheres"),
             ("Pesquisar produto", "pesquisar"),
             ("Falar com atendente", "atendente"),
+        ),
+    }
+
+
+def _iniciar_atendimento(estado):
+    """Limpa dados parciais para que uma nova conversa não reaproveite a sessão."""
+    estado.clear()
+    estado["etapa"] = "cadastro"
+    return {
+        "tipo": "menu",
+        "texto": "Olá! 👋 Bem-vindo ao atendimento BM36. Você já é cadastrado?",
+        "opcoes": _opcoes(
+            ("Sim, já sou cliente", "sim"),
+            ("Ainda não sou cliente", "nao"),
+            ("Quero ver produtos", "produtos"),
         ),
     }
 
@@ -142,6 +158,10 @@ def responder(mensagem, estado, cliente_existente=None, cadastro_pendente=False)
     normalizado = texto.lower()
     etapa = estado.get("etapa", "inicio")
 
+    # Funciona em qualquer ponto do fluxo, inclusive depois de uma resposta inválida.
+    if normalizado in COMANDOS_REINICIAR:
+        return _iniciar_atendimento(estado)
+
     # 1) Começo da conversa
     if etapa == "inicio":
         if normalizado not in SAUDACOES:
@@ -150,16 +170,7 @@ def responder(mensagem, estado, cliente_existente=None, cadastro_pendente=False)
                 "texto": "Para iniciar o atendimento, escreva 'oi'."
             }
 
-        estado["etapa"] = "cadastro"
-        return {
-            "tipo": "menu",
-            "texto": "Olá! 👋 Bem-vindo ao atendimento BM36. Você já é cadastrado?",
-            "opcoes": _opcoes(
-                ("Sim, já sou cliente", "sim"),
-                ("Ainda não sou cliente", "nao"),
-                ("Quero ver produtos", "produtos")
-            )
-        }
+        return _iniciar_atendimento(estado)
 
     # 2) Cadastro existente ou novo
     if etapa == "cadastro":
