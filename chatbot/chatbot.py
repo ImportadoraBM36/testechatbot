@@ -92,7 +92,6 @@ def _menu_tipo_loja(texto):
             ("Distribuidora", "distribuidora"),
             ("Atacado", "atacado"),
             ("Consumidor final/varejo", "varejo"),
-            ("Outro", "outro"),
         ),
     }
 
@@ -329,6 +328,12 @@ def responder(mensagem, estado, cliente_existente=None, cadastro_pendente=False)
 
     # 5) Tipo de loja
     if etapa == "tipo_loja":
+        if normalizado == "varejo":
+            return _menu_tipo_loja(
+                "No momento, a BM36 não realiza vendas para consumidor final ou varejo. "
+                "Selecione outro tipo de loja caso se aplique ao seu negócio."
+            )
+
         if normalizado in TIPOS_LOJA:
             estado.update(tipo_loja=TIPOS_LOJA[normalizado], etapa="confirmar")
             return _menu_confirmar(estado)
