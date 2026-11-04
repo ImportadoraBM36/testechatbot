@@ -87,7 +87,6 @@ def achar_imagem(*codigos):
     return None
 
 
-
 def _formatar_produtos(linhas):
     resultado = []
 
@@ -118,19 +117,13 @@ def buscar_produtos(catalogo, termos=()):
         return []
 
     filtros = {
-        "cozinha": (
-            "%castiçal%",
-            "%porta-jóias%",
-            "%coleção%",
-            "%melamina%",
-        ),
+        "vidro": ("%vidro%",),
+        "embalagem": ("%embalagem%",),
+        "frasco": ("%frasco%",),
+        "papelaria": ("%papelaria%",),
+        "presente": ("%presente%",),
         "talheres": (
-            "%cromado%",
-            "%inox%",
-            "%dourado%",
-            "%bicolor%",
-            "%preto%",
-            "%verde%",
+            "%talher%",
         ),
     }
 
