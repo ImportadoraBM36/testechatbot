@@ -9,26 +9,14 @@ SAUDACOES = {"oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"}
 CATALOGOS = {
     "vidro": "Vidro",
     "embalagem": "Embalagem",
-    "frascos": "Frascos",
-    "papelaria/talheres/presentes": "Papelaria/Talheres/Presentes",
+    "frasco": "Frasco",
+    "papelaria": "Papelaria",
+    "presente": "Presente",
+    "talheres": "Talheres",
 }
 
-# Filtros de cada catálogo: (texto do botão, valor, palavras que procuramos no nome)
-# Catálogos sem filtros aqui mostram todos os produtos direto.
-FILTROS = {
-    "vidro": [
-        ("Vidros", "vidro", ("vidro",)),
-        ("Porta-Jóias", "joias", ("porta-jóias",)),
-        ("Porcelanas", "porcelana", ("coleção",)),
-        ("Melamina", "melamina", ("melamina",)),
-    ],
-    "papelaria/talheres/presentes": [
-        ("Cromado / Inox", "cromado", ("cromado",)),
-        ("Dourado", "dourado", ("dourado",)),
-        ("Bicolor", "bicolor", ("bicolor",)),
-        ("Preto e Verde", "cores", ("preto", "verde")),
-    ],
-}
+# Os seis catálogos mostram seus produtos diretamente, sem subfiltros.
+FILTROS = {}
 
 # valor do botão (minúsculo) -> texto salvo no cadastro
 TIPOS_LOJA = {
@@ -75,8 +63,10 @@ def _catalogos(texto="Qual catálogo você deseja ver?"):
         "opcoes": _opcoes(
             ("Vidro", "vidro"),
             ("Embalagem", "embalagem"),
-            ("Frascos", "frascos"),
-            ("Papelaria/Talheres/Presentes", "papelaria/talheres/presentes"),
+            ("Frasco", "frasco"),
+            ("Papelaria", "papelaria"),
+            ("Presente", "presente"),
+            ("Talheres", "talheres"),
             ("Pesquisar produto", "pesquisar"),
             ("Falar com atendente", "atendente"),
         ),
